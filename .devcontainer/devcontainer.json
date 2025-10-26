@@ -16,13 +16,7 @@
         "DavidAnson.vscode-markdownlint",
         "yzhang.markdown-all-in-one",
         "dbaeumer.vscode-eslint",
-        "esbenp.prettier-vscode",
-        // Rust
-        "fill-labs.dependi",
-        // .NET
-        "ms-dotnettools.csharp",
-        "ms-dotnettools.csdevkit",
-        "ms-dotnettools.vscodeintellicode-csharp"
+        "esbenp.prettier-vscode"
       ]
     }
   },
@@ -33,13 +27,7 @@
     // AWS
     "ghcr.io/devcontainers/features/aws-cli": {},
     // Node.js
-    "ghcr.io/devcontainers/features/node": {},
-    // Rust
-    "ghcr.io/devcontainers/features/rust": {},
-    // .NET
-    "ghcr.io/devcontainers/features/dotnet": {},
-    // Terraform
-    "ghcr.io/devcontainers/features/terraform": {}
+    "ghcr.io/devcontainers/features/node": {}
   },
   "postCreateCommand": "echo 'eval \"$(starship init bash)\"' >> ~/.bashrc"
 }
