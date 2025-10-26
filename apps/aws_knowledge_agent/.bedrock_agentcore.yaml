@@ -1,0 +1,41 @@
+default_agent: aws_knowledge_agent
+agents:
+  aws_knowledge_agent:
+    name: aws_knowledge_agent
+    entrypoint: /home/shirayuki/repos/agentcore-omnisearch-agent/apps/aws_knowledge_agent/main.py
+    platform: linux/arm64
+    container_runtime: docker
+    source_path: /home/shirayuki/repos/agentcore-omnisearch-agent/apps/aws_knowledge_agent
+    aws:
+      execution_role: arn:aws:iam::050451367088:role/AmazonBedrockAgentCoreSDKRuntime-ap-northeast-1-52ad28bb0b
+      execution_role_auto_create: false
+      account: 050451367088
+      region: ap-northeast-1
+      ecr_repository: 050451367088.dkr.ecr.ap-northeast-1.amazonaws.com/bedrock-agentcore-aws_knowledge_agent
+      ecr_auto_create: false
+      network_configuration:
+        network_mode: PUBLIC
+        network_mode_config: null
+      protocol_configuration:
+        server_protocol: A2A
+      observability:
+        enabled: true
+    bedrock_agentcore:
+      agent_id: aws_knowledge_agent-xCsHCKHit9
+      agent_arn: arn:aws:bedrock-agentcore:ap-northeast-1:050451367088:runtime/aws_knowledge_agent-xCsHCKHit9
+      agent_session_id: null
+    codebuild:
+      project_name: bedrock-agentcore-aws_knowledge_agent-builder
+      execution_role: arn:aws:iam::050451367088:role/AmazonBedrockAgentCoreSDKCodeBuild-ap-northeast-1-52ad28bb0b
+      source_bucket: bedrock-agentcore-codebuild-sources-050451367088-ap-northeast-1
+    memory:
+      mode: STM_ONLY
+      memory_id: aws_knowledge_agent_mem-qyUPY75lD9
+      memory_arn: arn:aws:bedrock-agentcore:ap-northeast-1:050451367088:memory/aws_knowledge_agent_mem-qyUPY75lD9
+      memory_name: aws_knowledge_agent_mem
+      event_expiry_days: 30
+      first_invoke_memory_check_done: false
+      was_created_by_toolkit: false
+    authorizer_configuration: null
+    request_header_configuration: null
+    oauth_configuration: null
