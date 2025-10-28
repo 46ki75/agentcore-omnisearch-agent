@@ -1,60 +1,64 @@
-# template-devcontainer
+# Architecture Design
 
-```bash
-npx degit 46ki75/template-devcontainer
+## Three-Layer Agent System
+
+This project implements a three-layer agent architecture using the Agent-to-Agent (A2A) Protocol for inter-agent communication.
+
+```txt
+┌─────────────────────────┐
+│    End-User Agent       │  ← User interaction
+│  (Query understanding   │
+│   & Response synthesis) │
+└───────────┬─────────────┘
+            │ A2A
+            ↓
+┌─────────────────────────┐
+│  Omni Search Agent      │  ← Query routing & aggregation
+│  (Search orchestration) │
+└───────────┬─────────────┘
+            │ A2A
+            ↓
+┌─────────────────────────┐
+│   Specialized Search    │  ← Domain-specific search
+│   Agents (AWS, Azure,   │     (Verbatim quotes + URLs)
+│   Microsoft, etc.)      │
+└─────────────────────────┘
 ```
 
-## Custom Features for Local Development
+## Layer Responsibilities
 
-Create a directory at `.devcontainer/features/<YOUR_FEATURE_NAME>` containing following files:
+### Layer 1: End-User Agent
 
-- `devcontainer-feature.json`: Metadata describing the feature.
-- `install.sh`: Shell script to install the feature.
+- Receives user queries
+- Delegates searches via A2A when needed
+- Synthesizes natural responses from search results
+- Provides source attribution
 
-### `devcontainer-feature.json`
+### Layer 2: Omni Search Agent
 
-- `id`: Identifier for this feature.
-- `installAfter`: Specifies dependencies that must be installed before this feature.
-- `customizations.vscode`: VSCode settings and extensions to apply when this features is used.
+- Analyzes queries to identify required domains
+- Routes searches to appropriate specialized agents
+- Aggregates results from multiple agents
+- Formats unified output with sources
 
-```json
-{
-  "id": "cargo-binstall",
-  "name": "cargo-binstall (via cargo)",
-  "version": "1.0.0",
-  "customizations": {
-    "vscode": {
-      "settings": {
-        "[rust]": { "editor.defaultFormatter": "rust-lang.rust-analyzer" }
-      },
-      "extensions": ["rust-lang.rust-analyzer"]
-    }
-  },
-  "installsAfter": ["ghcr.io/devcontainers/features/rust"]
-}
-```
+### Layer 3: Specialized Search Agents
 
-### `install.sh`
+- Execute domain-specific searches using MCP servers
+- Return verbatim quotes from official sources
+- Provide complete source URLs
+- No interpretation or summarization
 
-Dev Container features are defined using simple shell scripts.
+## Communication Protocol
 
-```bash
-#!/bin/bash
+All inter-agent communication uses **Agent-to-Agent (A2A) Protocol**, enabling:
 
-set -e -u -o pipefail
+- Standardized message exchange
+- Agent discovery and capability negotiation
+- Reliable request/response patterns
 
-USERNAME="${USERNAME:-"vscode"}"
+## Design Benefits
 
-su "${USERNAME}" -c "curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash"
-su "${USERNAME}" -c "cargo binstall just cargo-lambda --no-confirm"
-
-echo "Done!"
-
-# Add your custom installation steps below ---
-```
-
-### Need More Information?
-
-Exploring the actual implementations in [Available Dev Container Features](https://containers.dev/features) is the best way to learn how to create your own.
-
-For detailed specifications, see the [Dev Container metadata reference](https://containers.dev/implementors/json_reference/).
+- **Separation of concerns**: Each layer has a clear, focused responsibility
+- **Scalability**: New specialized agents can be added without modifying other layers
+- **Reliability**: Official sources via MCP servers reduce context window pressure
+- **Maintainability**: Standardized A2A protocol simplifies integration
