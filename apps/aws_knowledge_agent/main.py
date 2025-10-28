@@ -7,6 +7,7 @@ import uvicorn
 from fastapi import FastAPI
 from mcp.client.streamable_http import streamablehttp_client
 from strands import Agent
+from strands.models import BedrockModel
 from strands.tools.mcp.mcp_client import MCPClient
 
 
@@ -119,6 +120,10 @@ streamable_http_mcp_client = MCPClient(
     lambda: streamablehttp_client("https://knowledge-mcp.global.api.aws")
 )
 
+bedrock_model = BedrockModel(
+    model_id="apac.amazon.nova-pro-v1:0",
+)
+
 with streamable_http_mcp_client:
 
     tools = streamable_http_mcp_client.list_tools_sync()
@@ -129,6 +134,7 @@ with streamable_http_mcp_client:
         system_prompt=system_prompt,
         tools=[tools],
         callback_handler=None,
+        model=bedrock_model,
     )
 
     host, port = "0.0.0.0", 9000
