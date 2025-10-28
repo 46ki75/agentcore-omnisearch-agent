@@ -12,7 +12,7 @@ mcp = FastMCP("omnisearch_mcp")
 AGENT_URL = "http://127.0.0.1:10000/"
 
 
-async def run():
+async def run(query: str) -> str:
 
     httpx_client = httpx.AsyncClient(
         timeout=httpx.Timeout(
@@ -30,7 +30,7 @@ async def run():
     message = Message(
         messageId=str(uuid.uuid4()),
         role=Role.user,
-        parts=[Part(root=TextPart(text="Amazon S3 Vectors とは何ですか？"))],
+        parts=[Part(root=TextPart(text=query))],
     )
 
     artifacts = []
@@ -52,6 +52,12 @@ async def run():
     return text
 
 
+@mcp.tool()
+async def ask(query: str) -> str:
+    """Ask anything"""
+    result = await run(query=query)
+    return result
+
+
 if __name__ == "__main__":
-    result = asyncio.run(run())
-    print(result)
+    mcp.run()
