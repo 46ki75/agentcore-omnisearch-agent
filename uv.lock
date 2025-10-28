@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.12"
 resolution-markers = [
     "python_full_version >= '3.13'",
@@ -1131,12 +1131,14 @@ source = { virtual = "apps/omnisearch_agent" }
 dependencies = [
     { name = "bedrock-agentcore" },
     { name = "strands-agents", extra = ["a2a"] },
+    { name = "strands-agents-tools" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "bedrock-agentcore", specifier = ">=1.0.4" },
     { name = "strands-agents", extras = ["a2a"], specifier = ">=1.13.0" },
+    { name = "strands-agents-tools", specifier = ">=0.2.12" },
 ]
 
 [[package]]
