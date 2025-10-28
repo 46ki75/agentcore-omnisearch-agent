@@ -17,8 +17,12 @@
         "yzhang.markdown-all-in-one",
         "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode",
+        // TOML
+        "tamasfe.even-better-toml",
         // Python
-        "ms-python.python"
+        "ms-python.python",
+        "ms-python.black-formatter",
+        "fill-labs.dependi"
       ]
     }
   },
