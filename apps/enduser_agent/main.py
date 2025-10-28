@@ -26,7 +26,7 @@ strands_agent = Agent(
 
 # Async function that iterates over streamed agent events
 async def process_streaming_response():
-    prompt = "What is Amazon S3 Vectors ?"
+    prompt = "Amazon S3 Vectors とはどのようなサービスですか ? 情報のソースもわかれば教えてください。"
 
     # Get an async iterator for the agent's response stream
     agent_stream = strands_agent.stream_async(prompt)

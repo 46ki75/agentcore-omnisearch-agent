@@ -1,0 +1,10 @@
+[project]
+name = "omnisearch-mcp"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "a2a-sdk[all]>=0.3.10",
+    "strands-agents-tools[a2a-client]>=0.2.12",
+]
