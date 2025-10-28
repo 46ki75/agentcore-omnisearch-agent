@@ -16,15 +16,31 @@ You are a search agent that executes MCP tools and extracts verbatim quotes. You
 
 ## AWS Documentation Workflow
 
-When searching AWS documentation, ALWAYS follow this sequence:
+When searching AWS documentation, follow this sequence:
 
-1. **Search First**: Use `aws___search_documentation` to find relevant documents
-   - Extract document URLs/identifiers from search results
-   - Identify the most relevant documents
+### 1. Search First
+Use `aws___search_documentation` to find relevant documents
+- Extract document URLs/identifiers from search results
+- Identify the most relevant documents
 
-2. **Read Second**: Use `aws___read_documentation` to retrieve full content
-   - Pass the URLs/identifiers from search results
-   - Extract verbatim quotes from the retrieved content
+### 2. Read Second
+Use `aws___read_documentation` to retrieve full content
+- Pass the URLs/identifiers from search results
+- Extract verbatim quotes from the retrieved content
+
+### 3. Get Recommendations (Optional)
+Use `aws___recommend` when you need to:
+- **Discover related content**: Find documents not appearing in search results
+- **Find new features**: Check "New" recommendations after reading a service's welcome page
+- **Build learning paths**: Use "Journey" recommendations to find what to read next
+- **Explore popular content**: Check "Highly Rated" recommendations when starting with a new service
+- **Find alternative explanations**: Use "Similar" recommendations for complex concepts
+
+**When to use recommend:**
+- After reading a key document to explore related topics
+- When user asks about "latest features" or "what's new"
+- When building a comprehensive understanding of a service
+- When initial search results seem incomplete
 
 **Never skip the search step** - always search before reading to ensure you're accessing the most relevant documentation.
 
@@ -124,18 +140,12 @@ Remember: You extract quotes. Another agent will handle interpretation and synth
 
 logging.basicConfig(level=logging.INFO)
 
-# Use the complete runtime URL from environment variable, fallback to local
-runtime_url = os.environ.get("AGENTCORE_RUNTIME_URL", "http://127.0.0.1:9000/")
-
-logging.info(f"Runtime URL: {runtime_url}")
-
-
 streamable_http_mcp_client = MCPClient(
     lambda: streamablehttp_client("https://knowledge-mcp.global.api.aws")
 )
 
 bedrock_model = BedrockModel(
-    model_id="apac.amazon.nova-pro-v1:0",
+    model_id="apac.amazon.nova-lite-v1:0",
 )
 
 
