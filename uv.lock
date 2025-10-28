@@ -54,10 +54,14 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "strands-agents" },
+    { name = "strands-agents-tools", extra = ["a2a-client"] },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "strands-agents", specifier = ">=1.13.0" }]
+requires-dist = [
+    { name = "strands-agents", specifier = ">=1.13.0" },
+    { name = "strands-agents-tools", extras = ["a2a-client"], specifier = ">=0.2.12" },
+]
 
 [[package]]
 name = "aiohappyeyeballs"
@@ -1131,14 +1135,14 @@ source = { virtual = "apps/omnisearch_agent" }
 dependencies = [
     { name = "bedrock-agentcore" },
     { name = "strands-agents", extra = ["a2a"] },
-    { name = "strands-agents-tools" },
+    { name = "strands-agents-tools", extra = ["a2a-client"] },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "bedrock-agentcore", specifier = ">=1.0.4" },
     { name = "strands-agents", extras = ["a2a"], specifier = ">=1.13.0" },
-    { name = "strands-agents-tools", specifier = ">=0.2.12" },
+    { name = "strands-agents-tools", extras = ["a2a-client"], specifier = ">=0.2.12" },
 ]
 
 [[package]]
