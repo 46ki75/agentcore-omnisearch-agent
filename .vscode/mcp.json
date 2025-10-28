@@ -1,0 +1,14 @@
+{
+    "servers": {
+        "omnisearch_mcp": {
+            "command": "uv",
+            "args": [
+                "run",
+                "--directory",
+                "./apps/omnisearch_mcp",
+                "main.py",
+            ],
+            "env": {}
+        }
+    }
+}

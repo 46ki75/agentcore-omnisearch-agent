@@ -1,17 +1,57 @@
-from strands import Agent
-from strands.models import BedrockModel
-from strands_tools.a2a_client import A2AClientToolProvider
+import uuid
+import asyncio
+import httpx
 
-provider = A2AClientToolProvider(known_agent_urls=["http://127.0.0.1:10000"])
+from a2a.client import ClientFactory, ClientConfig
+from a2a.types import Message, Part, Role, TextPart, TaskArtifactUpdateEvent
+from mcp.server.fastmcp import FastMCP
 
-bedrock_model = BedrockModel(
-    model_id="global.anthropic.claude-sonnet-4-5-20250929-v1:0",
-)
+mcp = FastMCP("omnisearch_mcp")
 
-agent = Agent(model=bedrock_model, tools=provider.tools)
 
-response = agent(
-    "pick an agent and make a sample call: Amazon S3 Vectors とは何ですか ?"
-)
+AGENT_URL = "http://127.0.0.1:10000/"
 
-print(response)
+
+async def run():
+
+    httpx_client = httpx.AsyncClient(
+        timeout=httpx.Timeout(
+            connect=10.0,
+            read=300.0,
+            write=30.0,
+            pool=10.0,
+        )
+    )
+
+    config = ClientConfig(httpx_client=httpx_client)
+
+    client = await ClientFactory.connect(AGENT_URL, client_config=config)
+
+    message = Message(
+        messageId=str(uuid.uuid4()),
+        role=Role.user,
+        parts=[Part(root=TextPart(text="Amazon S3 Vectors とは何ですか？"))],
+    )
+
+    artifacts = []
+    async for response in client.send_message(message):
+        if isinstance(response, tuple):
+            task, update_event = response
+            if isinstance(update_event, TaskArtifactUpdateEvent):
+                artifacts.append(update_event.artifact)
+            elif task.artifacts:
+                artifacts = task.artifacts
+
+    text = ""
+
+    for artifact in artifacts:
+        for part in artifact.parts:
+            if isinstance(part.root, TextPart):
+                text = text + part.root.text
+
+    return text
+
+
+if __name__ == "__main__":
+    result = asyncio.run(run())
+    print(result)
