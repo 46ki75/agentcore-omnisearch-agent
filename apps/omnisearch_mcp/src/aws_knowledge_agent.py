@@ -144,9 +144,7 @@ streamable_http_mcp_client = MCPClient(
     lambda: streamablehttp_client("https://knowledge-mcp.global.api.aws")
 )
 
-bedrock_model = BedrockModel(
-    model_id="apac.amazon.nova-lite-v1:0",
-)
+bedrock_model = BedrockModel(model_id="apac.amazon.nova-lite-v1:0", max_tokens=10000)
 
 
 async def query_aws(query: str):
@@ -178,5 +176,7 @@ async def query_aws(query: str):
 
 
 if __name__ == "__main__":
-    result = asyncio.run(query_aws("What is Amazon S3 Vectors ?"))
+    result = asyncio.run(
+        query_aws("How do I deploy MCP servers to Amazon Bedrock AgentCore Runtime ?")
+    )
     print(result)
