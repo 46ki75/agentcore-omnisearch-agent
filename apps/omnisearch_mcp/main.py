@@ -1,6 +1,4 @@
-import uuid
-import asyncio
-import httpx
+import re
 
 from a2a.client import ClientFactory, ClientConfig
 from a2a.types import Message, Part, Role, TextPart, TaskArtifactUpdateEvent
@@ -222,7 +220,9 @@ async def ask(query: str) -> str:
         elif "current_tool_use" in event and event["current_tool_use"].get("name"):
             print(f"\n[Tool use delta for: {event['current_tool_use']['name']}]")
 
-    return message
+    result = re.sub(r"<thinking>.*?</thinking>", "", message, flags=re.DOTALL)
+
+    return result
 
 
 if __name__ == "__main__":
