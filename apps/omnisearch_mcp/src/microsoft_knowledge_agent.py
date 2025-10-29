@@ -14,33 +14,30 @@ from strands.tools.mcp.mcp_client import MCPClient
 system_prompt = """
 You are a search agent that executes MCP tools and extracts verbatim quotes. Your sole purpose is extraction - NO interpretation, summarization, or synthesis.
 
-## AWS Documentation Workflow
+## Microsoft Documentation Workflow
 
-When searching AWS documentation, follow this sequence:
+When searching Microsoft documentation, follow this sequence:
 
 ### 1. Search First
-Use `aws___search_documentation` to find relevant documents
-- Extract document URLs/identifiers from search results
+Use `microsoft_docs_search` to find relevant documents
+- Extract document URLs from search results
 - Identify the most relevant documents
 
 ### 2. Read Second
-Use `aws___read_documentation` to retrieve full content
-- Pass the URLs/identifiers from search results
-- Extract verbatim quotes from the retrieved content
+Use `microsoft_docs_fetch` to retrieve full content
+- Pass the URLs from search results
+- Get complete documentation with all details
 
-### 3. Get Recommendations (Optional)
-Use `aws___recommend` when you need to:
-- **Discover related content**: Find documents not appearing in search results
-- **Find new features**: Check "New" recommendations after reading a service's welcome page
-- **Build learning paths**: Use "Journey" recommendations to find what to read next
-- **Explore popular content**: Check "Highly Rated" recommendations when starting with a new service
-- **Find alternative explanations**: Use "Similar" recommendations for complex concepts
+### 3. Get Code Samples (When Coding)
+Use `microsoft_code_sample_search` when you need to:
+- **Provide code examples**: Always use official samples before generating code
+- **Show implementations**: Demonstrate best practices for Microsoft/Azure technologies
+- **Language-specific examples**: Filter by programming language (csharp, python, javascript, etc.)
 
-**When to use recommend:**
-- After reading a key document to explore related topics
-- When user asks about "latest features" or "what's new"
-- When building a comprehensive understanding of a service
-- When initial search results seem incomplete
+**When to use code samples:**
+- Before providing any Microsoft/Azure related code snippets
+- When generating Microsoft/Azure related code implementations
+- When showing practical usage of Microsoft SDKs/APIs
 
 **Never skip the search step** - always search before reading to ensure you're accessing the most relevant documentation.
 
@@ -141,10 +138,10 @@ Remember: You extract quotes. Another agent will handle interpretation and synth
 logging.basicConfig(level=logging.INFO)
 
 streamable_http_mcp_client = MCPClient(
-    lambda: streamablehttp_client("https://knowledge-mcp.global.api.aws")
+    lambda: streamablehttp_client("https://learn.microsoft.com/api/mcp")
 )
 
-bedrock_model = BedrockModel(model_id="apac.amazon.nova-lite-v1:0", max_tokens=10000)
+bedrock_model = BedrockModel(model_id="apac.amazon.nova-pro-v1:0", max_tokens=10000)
 
 
 @tool
@@ -155,8 +152,8 @@ async def query_aws(query: str) -> str:
         tools = streamable_http_mcp_client.list_tools_sync()
 
         strands_agent = Agent(
-            name="AWS Knowledge Search Agent",
-            description="A search agent that executes AWS Knowledge MCP tools and extracts verbatim quotes from AWS documentation, API references, best practices, and architectural guidance without interpretation or synthesis.",
+            name="Microsoft Knowledge Search Agent",
+            description="A search agent that executes Microsoft Knowledge MCP tools and extracts verbatim quotes from Microsoft documentation, API references, best practices, and architectural guidance without interpretation or synthesis.",
             system_prompt=system_prompt,
             tools=[tools],
             callback_handler=None,
@@ -177,7 +174,5 @@ async def query_aws(query: str) -> str:
 
 
 if __name__ == "__main__":
-    result = asyncio.run(
-        query_aws("How do I deploy MCP servers to Amazon Bedrock AgentCore Runtime ?")
-    )
+    result = asyncio.run(query_aws("How do I launch WSL2 with a custom image?"))
     print(result)
