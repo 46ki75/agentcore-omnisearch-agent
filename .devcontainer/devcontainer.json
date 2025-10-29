@@ -16,7 +16,13 @@
         "DavidAnson.vscode-markdownlint",
         "yzhang.markdown-all-in-one",
         "dbaeumer.vscode-eslint",
-        "esbenp.prettier-vscode"
+        "esbenp.prettier-vscode",
+        // TOML
+        "tamasfe.even-better-toml",
+        // Python
+        "ms-python.python",
+        "ms-python.black-formatter",
+        "fill-labs.dependi"
       ]
     }
   },
@@ -29,5 +35,11 @@
     // Node.js
     "ghcr.io/devcontainers/features/node": {}
   },
-  "postCreateCommand": "echo 'eval \"$(starship init bash)\"' >> ~/.bashrc"
+  "postCreateCommand": "echo 'eval \"$(starship init bash)\"' >> ~/.bashrc",
+  "remoteEnv": {
+    "AWS_PROFILE": "examples"
+  },
+  "mounts": [
+    "type=bind,source=${localEnv:HOME}/.aws/,target=/home/vscode/.aws/"
+  ]
 }

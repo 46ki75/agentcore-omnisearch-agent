@@ -1,13 +1,11 @@
 [project]
-name = "agentcore-omnisearch-agent"
+name = "omnisearch-agent"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "strands-agents>=1.13.0",
+    "bedrock-agentcore>=1.0.4",
     "strands-agents-tools[a2a-client]>=0.2.12",
+    "strands-agents[a2a]>=1.13.0",
 ]
-
-[tool.uv.workspace]
-members = ["apps/*"]

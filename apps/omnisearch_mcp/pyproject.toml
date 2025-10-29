@@ -1,0 +1,7 @@
+[project]
+name = "omnisearch-mcp"
+version = "0.1.0"
+description = "MCP server for omnisearch agent using official a2a-sdk"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = ["a2a-sdk>=0.3.10", "mcp[cli]>=1.19.0"]
